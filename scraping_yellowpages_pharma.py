@@ -75,7 +75,7 @@ class YellowPagesPhScraper:
             "steel", "engineer", "environm", "canvas", "plastic", "manufact",
             "transport", "transform", "innovat", "quantum", "glass", "aluminum", "rental",
             "market", "express", "construc", "truck", "press", "security", "enterpr",
-            "fabric", "rubber", "marine", "ship"
+            "fabric", "rubber", "marine", "ship", "insular"
         ]
         
         self.df_business_infos = pd.DataFrame(self.data_business_info)
@@ -203,14 +203,14 @@ class YellowPagesPhScraper:
         self.continue_scraping = NO
         self.button_go['text'] = "DOING"
         self.button_go.grid()
-        self.button_save['text'] = f"Save Details to {self.save_filpath}"
+        self.button_save['text'] = f"Save Details"
         self.button_save.grid()
         
         
     def start_auto_scraping(self):
         # self.start_thread_capture_search_entries(self.start_auto_scraping)
         self.continue_scraping = YES
-        self.button_go['text'] = "SCRAPING...!"
+        self.button_go['text'] = "SCRAPING"
         self.button_save['text'] = "Saving Multiple Entries..."
 
         # Check/update search inputs
@@ -225,13 +225,11 @@ class YellowPagesPhScraper:
         self.captured_url = f"https://www.yellow-pages.ph/search/{self.search_what_trimmed.lower()}/{search_location.lower()}/page-1".replace('--', '-')
         self.eeak_logs.append(self.captured_url + "\n")
         self.update_label_webpage()
-        
-        for pagenum in range(1, 5):
+        max_pages = 4  # There are 15 H2 URLs per page, recommended is 9 pages but for testing is 4
+        for pagenum in range(1, max_pages+1):
             self.delay_by_randomseconds()
-            
             url = self.captured_url.replace("page-1", f"page-{pagenum}")
             self.update_label_webpage()
-            
             try:  # if Website is valid or available
                 webpage_response = requests.get(url, headers=self.headers)
             except requests.exceptions.MissingSchema:
@@ -398,14 +396,15 @@ class YellowPagesPhScraper:
             self.dict_business_info[key] = self.dict_entries_business[key].get()
         # Add values from those tk Entries into our DataFrame
         self.df_business_infos = self.df_business_infos._append(self.dict_business_info, ignore_index=True)
-        self.df_business_infos.dropna(inplace = True) # Delete rows with an emtpy cell from original DF
+         # Delete rows with an emtpy cell from original DF
+        # self.df_business_infos.dropna(inplace = True)
         self.df_business_infos.drop_duplicates(inplace = True) # Delete duplicates
         if filename.endswith("xlsx"):
             self.df_business_infos.to_excel(filename, index=False)
         elif filename.endswith("csv"):
             self.df_business_infos.to_csv(filename, index=False)
         self.udpate_tview_df_contents(self.df_business_infos)
-        time.sleep(2)
+        # time.sleep(2)
         
 
     def delay_by_randomseconds(self):
@@ -427,20 +426,12 @@ class YellowPagesPhScraper:
         # create a file object along with extension
         str_errors = "./logs/activities_logged-"
         filename = str_errors+str_current_datetime+".txt"
-        try: 
-            with open(filename, "r") as errorslistfile:
-                pass
-        except FileExistsError:
-            self.eeak_logs.append(f"File {filename} already exists. Renaming new addition...\n")
-            filename  = str_errors+str_current_datetime+"1.txt"
-            with open(filename, "w") as file:
-                for item in self.eeak_logs:
-                    file.write(item)
-        except FileNotFoundError:
-            self.eeak_logs.append(f"File {filename} not found. Creating a new one...\n")
-            with open(filename, "w") as file:
-                for item in self.eeak_logs:
-                    file.write(item)
+        if self.eeak_logs:
+            self.eeak_logs.append("\nIs self.eeak_logs\n")
+        else:
+            self.eeak_logs.append("\nIs not self.eeak_logs\n")
+        with open(filename, "w") as file:
+            file.write(self.eeak_logs)
         
         
     def run(self):
