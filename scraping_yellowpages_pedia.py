@@ -44,21 +44,21 @@ class YellowPagesPhScraper:
         self.dict_business_info = {
             'Trade Name':"",
             'Short Description':"",
-            'Email Address':"",
+            'Address':"",
             'Contact Number':"",
             'Facebook URL':"",
         }
         self.dict_entries_business = {
             'Trade Name':"",
             'Short Description':"",
-            'Email Address':"",
+            'Address':"",
             'Contact Number':"",
             'Facebook URL':"",
         }
         self.data_business_info = {
             'Trade Name':[""],
             'Short Description':[""],
-            'Email Address':[""],
+            'Address':[""],
             'Contact Number':[""],
             'Facebook URL':[""],
         }
@@ -200,8 +200,8 @@ class YellowPagesPhScraper:
     def start_auto_scraping(self):
         # self.start_thread_capture_search_entries(self.start_auto_scraping)
         self.continue_scraping = YES
-        self.button_go['text'] = "SCRAPING"
-        self.button_save['text'] = "Saving Multiple Entries..."
+        self.button_go['text'] = "BUSY"
+        self.button_save['text'] = "Saving Multiple Entries"
 
         # Check/update search inputs
         self.search_what_trimmed = "".join(byte if byte.isalpha() else '-' for byte in self.entry_search_what.get())
@@ -215,9 +215,8 @@ class YellowPagesPhScraper:
         self.captured_url = f"https://www.yellow-pages.ph/search/{self.search_what_trimmed.lower()}/{search_location.lower()}/page-1".replace('--', '-')
         self.eeak_logs.append(self.captured_url + "\n")
         self.update_label_webpage()
-        max_pages = 4  # There are 15 H2 URLs per page, recommended is 9 pages but for testing is 4
+        max_pages = 7  # There are 15 H2 URLs per page, recommended is 9 pages but for testing is 4
         for pagenum in range(1, max_pages+1):
-            self.delay_by_randomseconds()
             url = self.captured_url.replace("page-1", f"page-{pagenum}")
             self.update_label_webpage()
             try:  # if Website is valid or available
@@ -257,8 +256,8 @@ class YellowPagesPhScraper:
                 # Now, let's trim down the possibilty that non-pharma will not be scraped
                 not_pharma_count = sum(1 for each in self.tuple_not_pedia if each in h2_link_lowercase_text)
                 if not_pharma_count == 0:
-                    if "pharma" or "drug" or "med" in h2_link_lowercase_text:
-                        self.eeak_logs.append('"pharma" or "drug" or "med"' + " in " + h2_link_lowercase_text + "\n")
+                    if "pedia" or "children" or "clinic" or "teen" in h2_link_lowercase_text:
+                        self.eeak_logs.append("pedia" or "children" or "clinic" or "teen" + h2_link_lowercase_text + "\n")
                         if link_url not in self.list_scraped_webpages:
                             self.eeak_logs.append("NOT YET SCRAPED!\n")
                             self.scrape_webpage(link_url)
@@ -267,15 +266,13 @@ class YellowPagesPhScraper:
                             self.eeak_logs.append("BUT SORRY, IT IS SCRAPED!\n")
                             continue
                     else:
-                        self.eeak_logs.append("Maybe IT IS NOT a pharmaceutical thing!\n")
+                        self.eeak_logs.append("Maybe IT IS NOT a pedia thing!\n")
                         continue
                 self.eeak_logs.append("\n")
         self.button_go['text'] = "GO!"
-            
 
     
     def scrape_webpage(self, url=""):
-        self.delay_by_randomseconds()
         if url == "": return
         try: # if Website is valid or available
             webpage_response = requests.get(url, headers=self.headers)
@@ -303,38 +300,42 @@ class YellowPagesPhScraper:
         except AttributeError:
             self.dict_business_info['Short Description'] = ""
         
-        if "lab" in self.dict_business_info['Short Description'].lower():
-            self.dict_business_info['Category'] = "Laboratory"
-        elif "suppl" in self.dict_business_info['Short Description'].lower():
-            self.dict_business_info['Category'] = "Supplier"
-        else:
-            self.dict_business_info['Category'] = "Distributor"
+        # # Include if there's a column for Categories
+        # if "lab" in self.dict_business_info['Short Description'].lower():
+        #     self.dict_business_info['Category'] = "Laboratory"
+        # elif "suppl" in self.dict_business_info['Short Description'].lower():
+        #     self.dict_business_info['Category'] = "Supplier"
+        # else:
+        #     self.dict_business_info['Category'] = "Distributor"
             
         try:
             self.dict_business_info['Address'] = soup.find("a", class_="biz-link yp-click").text
         except AttributeError:
             self.dict_business_info['Address'] = ""
+        
         try:    
             self.dict_business_info['Contact Number'] = soup.find("span", class_="phn-txt").text
         except AttributeError:
             self.dict_business_info['Contact Number'] = ""
             
-        try:
-            self.dict_business_info['Email Address'] = soup.find("a", class_="email-link").text
-        except AttributeError:
-            self.dict_business_info['Email Address'] = ""
-        try:
-            self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
-        except AttributeError:
-            try:
-                self.dict_business_info['Website'] = soup.find("a", class_="website-link").text
-                if self.dict_business_info['Website'].endswith("/"): 
-                    self.dict_business_info['Website'] = self.dict_business_info['Website'].replace("/", "") 
-            except AttributeError:
-                self.dict_business_info['Website'] = ""
+        # try:
+        #     self.dict_business_info['Email Address'] = soup.find("a", class_="email-link").text
+        # except AttributeError:
+        #     self.dict_business_info['Email Address'] = ""
+        
+        # try:
+        #     self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
+        # except AttributeError:
+        #     try:
+        #         self.dict_business_info['Website'] = soup.find("a", class_="website-link").text
+        #         if self.dict_business_info['Website'].endswith("/"): 
+        #             self.dict_business_info['Website'] = self.dict_business_info['Website'].replace("/", "") 
+        #     except AttributeError:
+        #         self.dict_business_info['Website'] = ""
                 
         self.update_entries()
-        self.save_file()  # TODO: Button f"Save Details to {self.save_filpath}" may not be necessary
+        self.save_file()
+        self.delay_by_randomseconds()
         
         
     def update_label_webpage(self):
@@ -386,9 +387,13 @@ class YellowPagesPhScraper:
             self.dict_business_info[key] = self.dict_entries_business[key].get()
         # Add values from those tk Entries into our DataFrame
         self.df_business_infos = self.df_business_infos._append(self.dict_business_info, ignore_index=True)
-         # Delete rows with an emtpy cell from original DF
+
+        # Delete rows with an emtpy cell from original DF
         # self.df_business_infos.dropna(inplace = True)
-        self.df_business_infos.drop_duplicates(inplace = True) # Delete duplicates
+
+        # Delete rows of duplicates from original DF
+        self.df_business_infos.drop_duplicates(inplace = True)
+        
         if filename.endswith("xlsx"):
             self.df_business_infos.to_excel(filename, index=False)
         elif filename.endswith("csv"):
@@ -421,7 +426,8 @@ class YellowPagesPhScraper:
         else:
             self.eeak_logs.append("\nIs not self.eeak_logs\n")
         with open(filename, "w") as file:
-            file.write(self.eeak_logs)
+            for each in self.eeak_logs:
+                file.writelines(each)
         
         
     def run(self):
