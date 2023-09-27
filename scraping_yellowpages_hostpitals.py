@@ -36,7 +36,7 @@ class YellowPagesPhScraper:
         self.default_url = f"https://www.yellow-pages.ph/search/{self.search_what.lower()}/{self.search_location.lower().replace(' ', '-')}/page-1"
         self.captured_url = ""
         self.list_scraped_webpages = []
-        self.save_filepath = "list_within_manila.xlsx"
+        self.save_filepath = "hospitals_within_manila.xlsx"
         self.headers = {  # This my Chrome browser's User-Agent info
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) \
                     Chrome/116.0.0.0 Safari/537.36"
@@ -116,6 +116,7 @@ class YellowPagesPhScraper:
                                                   values=["Metro Manila", "Makati City, Metro Manila", "Nationwide"])
         self.entry_search_location.grid(columnspan=2, row=2, column=4, sticky="w", ipady=10)
         self.entry_search_location.insert(0, self.search_location)
+        
         
         self.button_go = tk.Button(self.frame_upper, text="GO!", font=self.font_bold, command=self.start_auto_scraping)
         self.button_go.grid(row=self.BELOW_LOGO, column=5, columnspan=2, sticky="w", ipadx=20)
@@ -202,9 +203,9 @@ class YellowPagesPhScraper:
 
     def stop_scraping(self):
         self.continue_scraping = NO
-        self.button_go['text'] = "DOING"
+        self.button_go['text'] = "GO!"
         self.button_go.grid()
-        self.button_save['text'] = f"Save Details"
+        self.button_save['text'] = "Save Details"
         self.button_save.grid()
         
         
@@ -212,7 +213,9 @@ class YellowPagesPhScraper:
         # self.start_thread_capture_search_entries(self.start_auto_scraping)
         self.continue_scraping = YES
         self.button_go['text'] = "BUSY"
+        self.button_go.grid()
         self.button_save['text'] = "Saving Multiple Entries"
+        self.button_save.grid()
 
         # Check/update search inputs
         self.search_what_trimmed = "".join(byte if byte.isalpha() else '-' for byte in self.entry_search_what.get())
@@ -364,6 +367,7 @@ class YellowPagesPhScraper:
         for key in self.dict_business_info.keys():
             self.dict_entries_business[key].delete(0, tk.END)
             self.dict_entries_business[key].insert(0, self.dict_business_info[key])
+            self.dict_entries_business.config()
     
     
     def udpate_tview_df_contents(self, data_frame):
