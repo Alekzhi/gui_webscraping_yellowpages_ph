@@ -204,9 +204,8 @@ class YellowPagesPhScraper:
     def stop_scraping(self):
         self.continue_scraping = NO
         self.button_go['text'] = "GO!"
-        self.button_go.grid()
         self.button_save['text'] = "Save Details"
-        self.button_save.grid()
+        self.window.update()
         
         
     def start_auto_scraping(self):
@@ -283,7 +282,7 @@ class YellowPagesPhScraper:
                         self.eeak_logs.append("Maybe IT IS NOT a hostpial!\n")
                         continue
                 self.eeak_logs.append("\n")
-        self.button_go['text'] = "GO!"
+        self.stop_scraping()
 
     
     def scrape_webpage(self, url=""):
@@ -339,8 +338,6 @@ class YellowPagesPhScraper:
         try:
             self.dict_business_info['Facebook URL'] = "https://facebook.com/" + soup.find("a", class_="biz-link d-block ellipsis yp-click social-media-link").text
             self.dict_business_info['Facebook URL'] = self.dict_business_info['Facebook URL'].replace(" ", "") 
-            if self.dict_business_info['Facebook URL'].endswith("/"): 
-                self.dict_business_info['Facebook URL'] = self.dict_business_info['Facebook URL'].replace("/", "") 
         except AttributeError:
             self.dict_business_info['Facebook URL'] = ""
         
