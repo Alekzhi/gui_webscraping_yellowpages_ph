@@ -279,7 +279,7 @@ class YellowPagesPhScraper:
                             self.eeak_logs.append("BUT SORRY, IT IS SCRAPED!\n")
                             continue
                     else:
-                        self.eeak_logs.append("Maybe IT IS NOT a hostpial!\n")
+                        self.eeak_logs.append("Maybe IT IS NOT a hospital!\n")
                         continue
                 self.eeak_logs.append("\n")
         self.stop_scraping()

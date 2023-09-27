@@ -35,7 +35,7 @@ Automated in 3 seconds...
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 hospital6
 olivarez general hospital
 
@@ -180,7 +180,7 @@ Automated in 3 seconds...
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 hospital11
 hospital of the infant jesus
 
@@ -188,27 +188,27 @@ NOT YET SCRAPED!
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
-
-
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
-Maybe IT IS NOT a hostpial!
+
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
+
+Maybe IT IS NOT a hospital!
 hospital3
 mcu-fdtmf hospital
 
@@ -218,17 +218,17 @@ Automated in 1 second...
 
 
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 
 
 
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
+Maybe IT IS NOT a hospital!
 
 hospital3
 aj hospital supply and equipment
@@ -360,7 +360,7 @@ Automated in 3 seconds...
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 hospital5
 our lady of grace hospital
 
@@ -393,7 +393,7 @@ NOT YET SCRAPED!
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 hospital11
 santissimo rosario general hospital
 
@@ -466,7 +466,7 @@ Automated in 3 seconds...
 Automated in 2 seconds...
 Automated in 1 second...
 
-Maybe IT IS NOT a hostpial!
+Maybe IT IS NOT a hospital!
 hospital6
 dr. jose fabella memorial hospital
 
