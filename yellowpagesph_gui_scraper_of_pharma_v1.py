@@ -144,6 +144,7 @@ class Pharma_Scraper:
         button_openfile = tk.Button(master=frame_2, text="Open Excel file:", command=self.select_excel_file,
                                     font=self.font_bold)
         button_openfile.pack(side="right", padx=0, ipadx=5)
+     
                 
     def capture_clipboard(self):
         while True:
@@ -152,6 +153,7 @@ class Pharma_Scraper:
                 self.captured_url = new_clipboard_content
                 self.update_entry_webpage()
             time.sleep(2)  # From time module
+
 
     def start_clipboard_monitoring_thread(self):  # Call this function inside main()
         clipboard_thread = threading.Thread(target=self.capture_clipboard)  # From threading module
@@ -328,16 +330,19 @@ class Pharma_Scraper:
         self.dict_pharma_firm['Short Description'].delete(0, tk.END)
         self.dict_pharma_firm['Short Description'].insert(tk.END, picked_description)
         
+        
     def update_entry_webpage(self):
         self.entry_webpage.delete(0, tk.END)
         self.entry_webpage.insert(tk.END, self.default_url \
             if self.captured_url=="" else self.captured_url
             )
+           
              
     def update_entries(self):
         for key in self.dict_pharma_firm.keys():
             self.dict_pharma_firm[key].delete(0, tk.END)
             self.dict_pharma_firm[key].insert(0, self.dict_pharma_firm[key])
+    
     
     def udpate_text_df(self, delay=0):
         self.text_df.delete("1.0", tk.END)
@@ -349,6 +354,7 @@ class Pharma_Scraper:
             self.text_df.insert(tk.END, ".") 
         self.text_df.delete("1.0", tk.END)
         self.text_df.insert(tk.END, self.df_pharma_firms.to_string())        
+        
         
     def select_excel_file(self):
         self.save_filepath = filedialog.askopenfilename(
@@ -362,6 +368,7 @@ class Pharma_Scraper:
                 if self.save_filepath.endswith("xlsx") else \
                     pd.read_csv(self.save_filepath)
         self.udpate_text_df(delay=0)
+          
             
     def save_file(self):
         filename = self.entry_filepath.get()
@@ -376,9 +383,11 @@ class Pharma_Scraper:
             self.df_pharma_firms.to_csv(filename, index=False)
         self.udpate_text_df(delay=2)
 
+
     def run(self):
         self.start_clipboard_monitoring_thread()
         self.window.mainloop()
+
 
 if __name__ == "__main__":
     application = Pharma_Scraper()
