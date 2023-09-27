@@ -144,6 +144,7 @@ class LawFirmScraper:
         button_openfile = tk.Button(master=frame_2, text="Open Excel file:", command=self.select_excel_file,
                                     font=self.font_bold)
         button_openfile.pack(side="right", padx=0, ipadx=5)
+           
                 
     # Check clipboard if a URL is copied
     def capture_clipboard(self):
@@ -211,6 +212,7 @@ class LawFirmScraper:
                 self.dict_law_firm['Website'] = ""
                 
         self.update_entries()
+      
         
     def get_random_description(self):
         lawfirm_descriptions = [ 
@@ -328,16 +330,19 @@ class LawFirmScraper:
         self.dict_entries_law_firm['Short Description'].delete(0, tk.END)
         self.dict_entries_law_firm['Short Description'].insert(tk.END, picked_description)
         
+        
     def update_entry_webpage(self):
         self.entry_webpage.delete(0, tk.END)
         self.entry_webpage.insert(tk.END, self.default_url \
             if self.captured_url=="" else self.captured_url
             )
+           
              
     def update_entries(self):
         for key in self.dict_law_firm.keys():
             self.dict_entries_law_firm[key].delete(0, tk.END)
             self.dict_entries_law_firm[key].insert(0, self.dict_law_firm[key])
+    
     
     def udpate_text_df(self, delay=0):
         self.text_df.delete("1.0", tk.END)
@@ -349,6 +354,7 @@ class LawFirmScraper:
             self.text_df.insert(tk.END, ".") 
         self.text_df.delete("1.0", tk.END)
         self.text_df.insert(tk.END, self.df_law_firms.to_string())        
+     
         
     def select_excel_file(self):
         self.save_filepath = filedialog.askopenfilename(
@@ -362,6 +368,7 @@ class LawFirmScraper:
                 if self.save_filepath.endswith("xlsx") else \
                     pd.read_csv(self.save_filepath)
         self.udpate_text_df(delay=0)
+            
             
     def save_file(self):
         filename = self.entry_filepath.get()
@@ -379,6 +386,7 @@ class LawFirmScraper:
     def run(self):
         self.start_clipboard_monitoring_thread()
         self.window.mainloop()
+
 
 if __name__ == "__main__":
     application = LawFirmScraper()
