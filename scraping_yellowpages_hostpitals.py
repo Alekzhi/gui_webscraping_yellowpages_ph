@@ -43,24 +43,33 @@ class YellowPagesPhScraper:
                 }
         self.dict_business_info = {
             'Trade Name':"",
+            'Category': "",
             'Short Description':"",
             'Address':"",
             'Contact Number':"",
+            'Website': "",
             'Facebook URL':"",
+            'Email Address': ""
         }
         self.dict_entries_business = {
             'Trade Name':"",
+            'Category': "",
             'Short Description':"",
             'Address':"",
             'Contact Number':"",
+            'Website': "",
             'Facebook URL':"",
+            'Email Address': ""
         }
         self.data_business_info = {
-            'Trade Name':[""],
-            'Short Description':[""],
-            'Address':[""],
-            'Contact Number':[""],
-            'Facebook URL':[""],
+            'Trade Name': [""],
+            'Category': [""],
+            'Short Description': [""],
+            'Address': [""],
+            'Contact Number': [""],
+            'Website': [""],
+            'Facebook URL': [""],
+            'Email Address': [""]
         }
         
         self.tuple_not_hospital = [
@@ -300,13 +309,12 @@ class YellowPagesPhScraper:
         except AttributeError:
             self.dict_business_info['Short Description'] = ""
         
-        # # Include if there's a column for Categories
-        # if "lab" in self.dict_business_info['Short Description'].lower():
-        #     self.dict_business_info['Category'] = "Laboratory"
-        # elif "suppl" in self.dict_business_info['Short Description'].lower():
-        #     self.dict_business_info['Category'] = "Supplier"
-        # else:
-        #     self.dict_business_info['Category'] = "Distributor"
+        if "lab" in self.dict_business_info['Short Description'].lower():
+            self.dict_business_info['Category'] = "Laboratory"
+        elif "suppl" in self.dict_business_info['Short Description'].lower():
+            self.dict_business_info['Category'] = "Supplier"
+        else:
+            self.dict_business_info['Category'] = "Distributor"
             
         try:
             self.dict_business_info['Address'] = soup.find("a", class_="biz-link yp-click").text
@@ -318,20 +326,20 @@ class YellowPagesPhScraper:
         except AttributeError:
             self.dict_business_info['Contact Number'] = ""
             
-        # try:
-        #     self.dict_business_info['Email Address'] = soup.find("a", class_="email-link").text
-        # except AttributeError:
-        #     self.dict_business_info['Email Address'] = ""
+        try:
+            self.dict_business_info['Email Address'] = soup.find("a", class_="email-link").text
+        except AttributeError:
+            self.dict_business_info['Email Address'] = ""
         
-        # try:
-        #     self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
-        # except AttributeError:
-        #     try:
-        #         self.dict_business_info['Website'] = soup.find("a", class_="website-link").text
-        #         if self.dict_business_info['Website'].endswith("/"): 
-        #             self.dict_business_info['Website'] = self.dict_business_info['Website'].replace("/", "") 
-        #     except AttributeError:
-        #         self.dict_business_info['Website'] = ""
+        try:
+            self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
+        except AttributeError:
+            try:
+                self.dict_business_info['Website'] = soup.find("a", class_="website-link").text
+                if self.dict_business_info['Website'].endswith("/"): 
+                    self.dict_business_info['Website'] = self.dict_business_info['Website'].replace("/", "") 
+            except AttributeError:
+                self.dict_business_info['Website'] = ""
                 
         self.update_entries()
         self.save_file()
