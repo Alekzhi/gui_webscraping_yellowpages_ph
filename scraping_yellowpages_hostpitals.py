@@ -48,7 +48,7 @@ class YellowPagesPhScraper:
             'Address':"",
             'Contact Number':"",
             'Website': "",
-            'Social Media':"",
+            'Facebook URL':"",
             'Email Address': ""
         }
         self.dict_entries_business = {
@@ -58,7 +58,7 @@ class YellowPagesPhScraper:
             'Address':"",
             'Contact Number':"",
             'Website': "",
-            'Social Media':"",
+            'Facebook URL':"",
             'Email Address': ""
         }
         self.data_business_info = {
@@ -68,7 +68,7 @@ class YellowPagesPhScraper:
             'Address': [""],
             'Contact Number': [""],
             'Website': [""],
-            'Social Media': [""],
+            'Facebook URL': [""],
             'Email Address': [""]
         }
         
@@ -314,12 +314,12 @@ class YellowPagesPhScraper:
         except AttributeError:
             self.dict_business_info['Short Description'] = ""
         
-        if "lab" in self.dict_business_info['Short Description'].lower():
-            self.dict_business_info['Category'] = "Laboratory"
-        elif "suppl" in self.dict_business_info['Short Description'].lower():
-            self.dict_business_info['Category'] = "Supplier"
+        if "clinic" in self.dict_business_info['Short Description'].lower():
+            self.dict_business_info['Category'] = "Clinic"
+        elif "center" in self.dict_business_info['Short Description'].lower():
+            self.dict_business_info['Category'] = "Medical Center"
         else:
-            self.dict_business_info['Category'] = "Distributor"
+            self.dict_business_info['Category'] = "Hospital"
             
         try:
             self.dict_business_info['Address'] = soup.find("a", class_="biz-link yp-click").text
@@ -337,9 +337,12 @@ class YellowPagesPhScraper:
             self.dict_business_info['Email Address'] = ""
             
         try:
-            self.dict_business_info['Social Media'] = soup.find("a", class_="biz-link d-block ellipsis yp-click social-media-link").text
+            self.dict_business_info['Facebook URL'] = "https://facebook.com/" + soup.find("a", class_="biz-link d-block ellipsis yp-click social-media-link").text
+            self.dict_business_info['Facebook URL'] = self.dict_business_info['Facebook URL'].replace(" ", "") 
+            if self.dict_business_info['Facebook URL'].endswith("/"): 
+                self.dict_business_info['Facebook URL'] = self.dict_business_info['Facebook URL'].replace("/", "") 
         except AttributeError:
-            self.dict_business_info['Social Media'] = ""
+            self.dict_business_info['Facebook URL'] = ""
         
         try:
             self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
@@ -360,14 +363,14 @@ class YellowPagesPhScraper:
         self.label_webpage = tk.Label(self.frame_upper, width=45, font=self.font_default,
                                       fg="#9acef5", bg="#134163",
                                       text=self.default_url if self.captured_url=="" else self.captured_url)
-        self.label_webpage.grid(columnspan=5, row=self.BELOW_LOGO, column=0, sticky="ew", ipady=5)
+        self.window.update()
              
              
     def update_entries(self):
         for key in self.dict_business_info.keys():
             self.dict_entries_business[key].delete(0, tk.END)
             self.dict_entries_business[key].insert(0, self.dict_business_info[key])
-            self.dict_entries_business.config()
+            self.window.update()
     
     
     def udpate_tview_df_contents(self, data_frame):
@@ -379,7 +382,8 @@ class YellowPagesPhScraper:
 
         data_frame_rows = data_frame.to_numpy().tolist() # Rows from Excel will become list of NumPy Arrays, then just list
         for row in data_frame_rows: # Put each row in Treeview (tview_df_contents)
-            self.tview_df_contents.insert("", index="end", values=row)       
+            self.tview_df_contents.insert("", index="end", values=row)      
+        self.window.update() 
         
         
     def select_excel_file(self):
