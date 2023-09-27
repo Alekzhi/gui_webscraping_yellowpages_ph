@@ -48,7 +48,7 @@ class YellowPagesPhScraper:
             'Address':"",
             'Contact Number':"",
             'Website': "",
-            'Facebook URL':"",
+            'Social Media':"",
             'Email Address': ""
         }
         self.dict_entries_business = {
@@ -58,7 +58,7 @@ class YellowPagesPhScraper:
             'Address':"",
             'Contact Number':"",
             'Website': "",
-            'Facebook URL':"",
+            'Social Media':"",
             'Email Address': ""
         }
         self.data_business_info = {
@@ -68,7 +68,7 @@ class YellowPagesPhScraper:
             'Address': [""],
             'Contact Number': [""],
             'Website': [""],
-            'Facebook URL': [""],
+            'Social Media': [""],
             'Email Address': [""]
         }
         
@@ -137,9 +137,11 @@ class YellowPagesPhScraper:
         self.button_save = tk.Button(self.frame_upper, text=f"Save Details", command=self.save_file, font=self.font_bold)
         self.button_save.grid(columnspan=3, row=row, column=0, ipadx=15, ipady=5) 
         row += 1
-        for i in range(4): # Additional invisible rows
-            tk.Label(self.frame_upper, bg="#225479").grid(columnspan=3, row=row, column=0,  pady=5)
-            row += i+1
+        
+        # Additional invisible rows if DF Headers less than 6
+        # for i in range(2):
+        #     tk.Label(self.frame_upper, bg="#225479").grid(columnspan=3, row=row, column=0,  pady=5)
+        #     row += i+1
             
         self.frame_ofTview = tk.LabelFrame(self.frame_upper, text="Logs/DataFrames", fg="lightgrey", bg="#225479")
         self.frame_ofTview.grid(row=self.BELOW_WEPAGE, column=3, rowspan=row-4, columnspan=4,  sticky="nswe", ipady=100)
@@ -154,7 +156,7 @@ class YellowPagesPhScraper:
         
         # FRAME 2 of 2: for Button: Browse File and Entry: Filepath
         self.frame_lower = tk.LabelFrame(self.window, text="Open and Browse DataFrames", fg="lightgrey", bg="#225479")
-        self.frame_lower.grid(columnspan=self.MAXCOLUMNS-2, row=row+2, column=1, sticky="nswe", ipadx=10)
+        self.frame_lower.grid(columnspan=self.MAXCOLUMNS-2, row=row+4, column=1, sticky="nswe", ipadx=10)
         
         button_browse_file = tk.Button(self.frame_lower, text="Open/Browse Excel File:", command=self.select_excel_file,
                                     font=self.font_bold)
@@ -330,6 +332,11 @@ class YellowPagesPhScraper:
             self.dict_business_info['Email Address'] = soup.find("a", class_="email-link").text
         except AttributeError:
             self.dict_business_info['Email Address'] = ""
+            
+        try:
+            self.dict_business_info['Social Media'] = soup.find("a", class_="biz-link d-block ellipsis yp-click social-media-link").text
+        except AttributeError:
+            self.dict_business_info['Social Media'] = ""
         
         try:
             self.dict_business_info['Website'] = soup.find("a", class_="biz-link d-block ellipsis yp-click").text
@@ -430,9 +437,9 @@ class YellowPagesPhScraper:
         str_errors = "./logs/activities_logged-"
         filename = str_errors+str_current_datetime+".txt"
         if self.eeak_logs:
-            self.eeak_logs.append("\nIs self.eeak_logs\n")
+            self.eeak_logs.append("File of logged activties already exists.\n")
         else:
-            self.eeak_logs.append("\nIs not self.eeak_logs\n")
+            self.eeak_logs.append("File of logged activties does not exist.\n")
         with open(filename, "w") as file:
             for each in self.eeak_logs:
                 file.writelines(each)
