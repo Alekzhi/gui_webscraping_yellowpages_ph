@@ -228,7 +228,8 @@ class YellowPagesPhScraper:
         self.captured_url = f"https://www.yellow-pages.ph/search/{self.search_what_trimmed.lower()}/{search_location.lower()}/page-1".replace('--', '-')
         self.eeak_logs.append(self.captured_url + "\n")
         self.update_label_webpage()
-        max_pages = 7  # There are 15 H2 URLs per page, recommended is 9 pages but for testing is 4
+        
+        max_pages = 8  # There are 15 H2 URLs per page, recommended is 9 pages but for testing is 4
         for pagenum in range(1, max_pages+1):
             url = self.captured_url.replace("page-1", f"page-{pagenum}")
             self.update_label_webpage()
@@ -311,7 +312,127 @@ class YellowPagesPhScraper:
         try:
                 self.dict_business_info['Short Description'] = soup.find("h2", class_="h2-businessname").text
         except AttributeError:
-            self.dict_business_info['Short Description'] = ""
+            hospital_descriptions = [
+                "Healing at its finest.",
+                "Your health, our mission.",
+                "Excellence in healthcare.",
+                "Caring for your well-being.",
+                "Your trusted health partner.",
+                "Innovative medical care.",
+                "Quality healthcare close by.",
+                "Compassion in every cure.",
+                "Wellness starts with us.",
+                "Your health, our priority.",
+                "Care that counts most.",
+                "Expertise in health.",
+                "Dedicated to your well-being.",
+                "Your health, our commitment.",
+                "Caring, curing, comforting.",
+                "Healthcare you can trust.",
+                "In good hands, always.",
+                "Healing, one patient at a time.",
+                "Committed to your health.",
+                "Where health comes first.",
+                "Expert care, close to home.",
+                "Empowering your well-being.",
+                "Health, hope, and healing.",
+                "Your journey to health.",
+                "Experienced in caring.",
+                "Your health, our passion.",
+                "Dedicated to better health.",
+                "Healing with compassion.",
+                "Leading in patient care.",
+                "Your trusted healthcare team.",
+                "Innovation in medicine.",
+                "Your health, our focus.",
+                "Caring for life's moments.",
+                "Healthcare excellence awaits.",
+                "Where health meets heart.",
+                "Care, compassion, and cures.",
+                "Excellence in medical care.",
+                "Your path to recovery.",
+                "Committed to wellness.",
+                "Healing with heart and soul.",
+                "Your health, our promise.",
+                "Elevating your well-being.",
+                "Leading in healthcare solutions.",
+                "Your trusted healing place.",
+                "Innovation in patient care.",
+                "Your health, our dedication.",
+                "Dedicated to your health journey.",
+                "Healing with expertise.",
+                "Caring for your well-being.",
+                "Empowering your health.",
+                "Healthcare that matters most.",
+                "Your well-being, our care.",
+                "Innovating for better health.",
+                "Your health, our mission.",
+                "Elevating patient care.",
+                "Healing, your way.",
+                "Quality care, close to you.",
+                "Your trusted health resource.",
+                "Committed to compassionate care.",
+                "Health solutions, your choice.",
+                "Expert care, always here.",
+                "Your health, our focus.",
+                "Innovation in healthcare.",
+                "Caring for brighter tomorrows.",
+                "Leading in patient outcomes.",
+                "Your path to recovery.",
+                "Committed to your wellness.",
+                "Healing lives, every day.",
+                "Your health, our dedication.",
+                "Elevating healthcare standards.",
+                "Leading in medical excellence.",
+                "Your trusted healthcare partner.",
+                "Innovation in health solutions.",
+                "Your health, our promise.",
+                "Dedicated to your well-being.",
+                "Healing for all generations.",
+                "Quality care, your comfort.",
+                "Your well-being, our mission.",
+                "Committed to patient well-being.",
+                "Healthcare that cares.",
+                "Expert care, trusted results.",
+                "Your health, our passion.",
+                "Innovating for better care.",
+                "Your trusted healing center.",
+                "Leading in patient satisfaction.",
+                "Your path to recovery.",
+                "Empowering your health journey.",
+                "Caring for your brighter future.",
+                "Healing with heart and skill.",
+                "Committed to excellence in care.",
+                "Your health, our focus.",
+                "Innovation in compassionate care.",
+                "Quality healthcare, close to you.",
+                "Your well-being, our dedication.",
+                "Healthcare that listens.",
+                "Your health, our promise.",
+                "Dedicated to your brighter health.",
+                "Leading in healthcare excellence.",
+                "Your trusted care partner.",
+                "Innovation in patient well-being.",
+                "Your path to recovery.",
+                "Caring for your brighter tomorrow.",
+                "Healing lives, every day.",
+                "Committed to your health journey.",
+                "Healthcare for generations.",
+                "Quality care, your comfort.",
+                "Your well-being, our mission.",
+                "Compassion in every cure.",
+                "Expert care, trusted results.",
+                "Your health, our passion.",
+                "Innovating for better health.",
+                "Your trusted healthcare team."
+            ]
+            self.eeak_logs.append(str(len(hospital_descriptions)) + "\n")
+            if len(hospital_descriptions) > 1:
+                picked_description = random.choice(hospital_descriptions)
+                hospital_descriptions.remove(picked_description)
+            else:
+                picked_description = "A healthcare facility for medical treatment."
+            self.dict_business_info['Short Description'] = picked_description
         
         if "clinic" in self.dict_business_info['Short Description'].lower():
             self.dict_business_info['Category'] = "Clinic"
