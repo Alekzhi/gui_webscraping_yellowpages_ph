@@ -121,7 +121,7 @@ class YellowPagesPhScraper:
         self.button_go = tk.Button(self.frame_upper, text="GO!", font=self.font_bold, command=self.start_auto_scraping)
         self.button_go.grid(row=self.BELOW_LOGO, column=5, columnspan=2, sticky="w", ipadx=20)
         
-        self.button_stop = tk.Button(self.frame_upper, text="STOP", font=self.font_bold, command=self.continue_scraping)
+        self.button_stop = tk.Button(self.frame_upper, text="STOP", font=self.font_bold, command=self.stop_scraping)
         self.button_stop.grid(row=self.BELOW_LOGO, column=5, columnspan=2, sticky="e", ipadx=20)
         
         self.BELOW_WEPAGE = self.BELOW_LOGO+1
@@ -197,7 +197,7 @@ class YellowPagesPhScraper:
 
     def start_thread_capture_search_entries(self):  # Call this function inside main()
         searchchanges_thread = threading.Thread(target=self.capture_search_entries)  # From threading module
-        searchchanges_thread.daemon = True  # This makes the thread exit when the main program exits
+        searchchanges_thread.daemcon = True  # This makes the thread exit when the main program exits
         searchchanges_thread.start()
 
 
@@ -262,12 +262,13 @@ class YellowPagesPhScraper:
             all_h2_elements = [h2_element.parent.parent.parent for h2_element in all_h2_contents]
             # Get search results by their H2 header and 
             for count, link in enumerate(all_h2_elements):
+                self.check_stop_button_event()
                 if self.continue_scraping == NO: 
                     break
                 link_url = self.home_url + link.find("a")["href"]
                 link_text = str(count) + link.find("h2").text
                 h2_link_lowercase_text = str(link_text).lower()
-                # Now, let's trim down the possibilty that non-pharma will not be scraped
+                # Now, let's trim down the possibilty that non-hospital will not be scraped
                 not_pharma_count = sum(1 for each in self.tuple_not_hospital if each in h2_link_lowercase_text)
                 if not_pharma_count == 0:
                     if "hospital" in h2_link_lowercase_text:
@@ -285,7 +286,12 @@ class YellowPagesPhScraper:
                 self.eeak_logs.append("\n")
         self.stop_scraping()
 
-    
+    def check_stop_button_event(self):
+        self.button_stop = tk.Button(self.frame_upper, text="STOP", font=self.font_bold, command=self.stop_scraping)
+        time.sleep(1)
+        self.window.update()
+        
+        
     def scrape_webpage(self, url=""):
         if url == "": return
         try: # if Website is valid or available
