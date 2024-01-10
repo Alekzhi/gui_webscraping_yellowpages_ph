@@ -1,0 +1,9 @@
+{
+    "0": "[Opening the Call]\nHello and thank you for calling [Company Name] Customer Support.\nMy name is [Your Name]. How can I assist you today?",
+    "1": "[Empathize/Apologize/Assure]\nI'm sorry to hear that you're experiencing an issue.\nPlease know that we're here to help and make things right.",
+    "2": "[Confirm Account]\nTo better assist you, could you please provide your\naccount details or order number, if you have them?",
+    "3": "[Probe/Ask Questions]\nCertainly, let's work together to get to the bottom of this.\nCan you please provide more details about the issue you're facing\nor the question you have? The more information you can share, the better I can assist you.",
+    "4": "[Solve Problem/Answer Question]\nThank you for sharing the details. Based on what you've described,\nhere's how we can address the situation: [Provide solution or answer to the question].\nPlease let me know if this resolves your concern or if you have any further questions.",
+    "5": "[Offer Additional Assistance]\nIs there anything else you'd like to discuss or inquire about?\nOur goal is to ensure your complete satisfaction, so feel free to ask any other questions or\nshare any additional concerns you might have.",
+    "6": "[Close the Call]\nThank you for reaching out to us today. I'm glad I could assist you with your concern.\nIf you encounter any more issues in the future or have more questions,\n don't hesitate to call us again. Have a great day!"
+}
